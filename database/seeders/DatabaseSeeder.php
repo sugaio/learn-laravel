@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Blog;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
+use App\Models\Phone;
+use Carbon\Factory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +28,8 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
         ]);
         
-        Blog::factory(100)->create();
+        // Blog::factory(100)->create();
+        $faker = Factory::create('id_ID')
+        Phone::factory(50)->create('id_ID');
     }
 }

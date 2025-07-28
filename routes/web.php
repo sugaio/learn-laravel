@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BlogController;
 use PHPUnit\Framework\Attributes\Group;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,6 +38,10 @@ route::get('/blogs/{id}/detail', [BlogController::class, 'show'])->name('blog.sh
 route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
 route::patch('blogs/{id}/update', [BlogController::class, 'update'])->name('blog.update');
 route::delete('/blogs/{id}/delete', [BlogController::class, 'delete'])->name('blog.delete');
+route::get('/blogs/trash', [BlogController::class, 'trash'])->name('blog.trash');
+route::get('/blogs/{id}/restore', [BlogController::class, 'restore'])->name('blog.restore');
+
+route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 // versi update simpel
 // route::view('/tentang', 'about');
