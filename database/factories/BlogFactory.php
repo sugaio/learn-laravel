@@ -17,11 +17,13 @@ class BlogFactory extends Factory
      */
     public function definition(): array
     {
+        $id_min = User::pluck('id')->min();
+        $id_max = User::pluck('id')->max();
         return [
             'title' => fake()->sentence(),
             'deskripsi' => fake()->paragraph(),
             'status' => fake()->randomElement(['Active', 'Inactive']),
-            'user_id' => fake()->numberBetween(401, 500)
+            'user_id' => fake()->numberBetween($id_min, $id_max)
         ];
     }
 }

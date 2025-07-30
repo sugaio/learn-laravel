@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
         ]);
         
-        // Blog::factory(100)->create();
-        $faker = Factory::create('id_ID')
-        Phone::factory(50)->create('id_ID');
+        Blog::factory(100)->create();
+        // $faker = Factory::create('id_ID')
+        Phone::factory(50)->create();
     }
 }

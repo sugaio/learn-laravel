@@ -35,6 +35,7 @@
                                 {{ ($users->currentpage() - 1) * $users->perpage() + $loop->iteration }}</td>
                             <td class="px-6 py-6">{{ $user->name }}</td>
                             <td class="px-6 py-6">{{ $user->email }}</td>
+                            <td class="px-6 py-6">{{ $user->phone->phone_number ?? '-'}}</td>
                             <td class="px-6 py-4 space-x-2 text-sm text-center">
                         </tr>
                     @endforeach

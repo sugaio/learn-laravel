@@ -138,4 +138,18 @@ class BlogController extends Controller
 
         return redirect()->route('blog.index')->with('sukses', 'Data blog Restore Sukses.');
     }
+
+    public function beranda()
+    {
+        $blogs = Blog::with('user')->where('status', 'Active')->orderBy('created_at', 'desc')->get();
+        // return $blogs; untuk cek data
+        return view('blogs.index', compact('blogs'));
+    }
+
+    public function detail($id)
+    {
+        $blog = Blog::with('user')->findOrFail($id);
+        // dd($blog); untuk cek data
+        return view('blogs.show', compact('blog'));
+    }
 }
