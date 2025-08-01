@@ -12,7 +12,7 @@
 <body>
     <div class="container px-4 py-6 mx-auto">
         <div class="flex justify-between w-full">
-            <h1 class="mb-4 text-6xl font-bold">Daftar Blog</h1>
+            <h1 class="mb-4 text-6xl font-bold">Daftar Blogs</h1>
 
             <div class="flex items-center space-x-3">
                 <form method="GET" class="w-lg">

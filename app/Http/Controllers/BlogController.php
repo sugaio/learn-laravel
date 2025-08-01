@@ -148,7 +148,7 @@ class BlogController extends Controller
 
     public function detail($id)
     {
-        $blog = Blog::with('user')->findOrFail($id);
+        $blog = Blog::with(['user', 'komentars'])->findOrFail($id);
         // dd($blog); untuk cek data
         return view('blogs.show', compact('blog'));
     }

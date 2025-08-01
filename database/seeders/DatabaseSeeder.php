@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([
-            // UserSeeder::class,
-            BlogSeeder::class,
-        ]);
+        // $this->call([
+        //     // UserSeeder::class,
+        //     BlogSeeder::class,
+        // ]);
         
         Blog::factory(100)->create();
         // $faker = Factory::create('id_ID')

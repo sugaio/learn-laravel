@@ -21,12 +21,12 @@ class BlogSeeder extends Seeder
 
         DB::table('blogs')->truncate();
 
-        // // for ($i = 1; $i <= 100; $i++) {
-        // //     DB::table('blogs')->insert ([
-        // //         'title' => "Blog $i",
-        // //         'deskripsi' => "Ini adalah deskripsi untuk blog $i",
-        // //         'user_id' => fake()->numberBetween(401, 500),
-        // //     ]);
-        // }
+        for ($i = 1; $i <= 100; $i++) {
+            DB::table('blogs')->insert ([
+                'title' => "Blog $i",
+                'deskripsi' => "Ini adalah deskripsi untuk blog $i",
+                'user_id' => fake()->numberBetween(401, 500),
+            ]);
+        }
     }
 }

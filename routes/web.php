@@ -4,6 +4,7 @@ use App\Models\Phone;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Group;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhoneController;
@@ -34,18 +35,22 @@ route::get('/blog', function () {
     return view('blog', ['data' => $data, 'title' => $title]);
 });
 
-route::get('admin/blogs', [BlogController::class, 'index'])->name('blog.index');
-route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
-route::post('/blogs/store', [BlogController::class, 'store'])->name('blog.store');
-route::get('/blogs/{id}/detail', [BlogController::class, 'show'])->name('blog.show');
-route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
-route::patch('blogs/{id}/update', [BlogController::class, 'update'])->name('blog.update');
-route::delete('/blogs/{id}/delete', [BlogController::class, 'delete'])->name('blog.delete');
-route::get('/blogs/trash', [BlogController::class, 'trash'])->name('blog.trash');
-route::get('/blogs/{id}/restore', [BlogController::class, 'restore'])->name('blog.restore');
+route::prefix('admin')->group(function () {
+    route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+    route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
+    route::post('/blogs/store', [BlogController::class, 'store'])->name('blog.store');
+    route::get('/blogs/{id}/detail', [BlogController::class, 'show'])->name('blog.show');
+    route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
+    route::patch('blogs/{id}/update', [BlogController::class, 'update'])->name('blog.update');
+    route::delete('/blogs/{id}/delete', [BlogController::class, 'delete'])->name('blog.delete');
+    route::get('/blogs/trash', [BlogController::class, 'trash'])->name('blog.trash');
+    route::get('/blogs/{id}/restore', [BlogController::class, 'restore'])->name('blog.restore');
 
-route::get('/users', [UserController::class, 'index'])->name('users.index');
-route::get('/phone', [PhoneController::class, 'index'])->name('phone.index');
+    route::get('/users', [UserController::class, 'index'])->name('users.index');
+    route::get('/phone', [PhoneController::class, 'index'])->name('phone.index');
+
+    route::post('/komentar/{id}', [KomentarController::class, 'store'])->name('komentar.store');
+});
 
 route::get('/blogs', [BlogController::class, 'beranda'])->name('blogs.beranda');
 route::get('blogs/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
