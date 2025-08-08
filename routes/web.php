@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Models\Phone;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Group;
@@ -8,6 +9,7 @@ use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhoneController;
+use App\Http\Controllers\TagController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,7 +37,7 @@ route::get('/blog', function () {
     return view('blog', ['data' => $data, 'title' => $title]);
 });
 
-route::prefix('admin')->group(function () {
+route::prefix('admin')->middleware('auth')->group(function () {
     route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
     route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
     route::post('/blogs/store', [BlogController::class, 'store'])->name('blog.store');
@@ -46,11 +48,25 @@ route::prefix('admin')->group(function () {
     route::get('/blogs/trash', [BlogController::class, 'trash'])->name('blog.trash');
     route::get('/blogs/{id}/restore', [BlogController::class, 'restore'])->name('blog.restore');
 
-    route::get('/users', [UserController::class, 'index'])->name('users.index');
-    route::get('/phone', [PhoneController::class, 'index'])->name('phone.index');
-
-    route::post('/komentar/{id}', [KomentarController::class, 'store'])->name('komentar.store');
+    route::middleware('admin')->group(function () {
+        route::get('/users', [UserController::class, 'index'])->name('users.index');
+        route::get('/phone', [PhoneController::class, 'index'])->name('phone.index');
+    
+        route::post('/komentar/{id}', [KomentarController::class, 'store'])->name('komentar.store');
+        route::get('/komentar', [KomentarController::class, 'index'])->name('komentar.index');
+        route::delete('/komentar/{id}', [KomentarController::class, 'destroy'])->name('komentar.destroy');
+    
+        route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+    });
+    
+    route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+route::middleware('guest')->group(function () {
+    route::get('/login', [AuthController::class, 'login'])->name('login');
+    route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
+});
+
 
 route::get('/blogs', [BlogController::class, 'beranda'])->name('blogs.beranda');
 route::get('blogs/{id}', [BlogController::class, 'detail'])->name('blogs.detail');

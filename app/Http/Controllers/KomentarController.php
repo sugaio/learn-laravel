@@ -22,4 +22,15 @@ class KomentarController extends Controller
 
         return redirect()->route('blogs.detail', $id)->with('sukses', 'Komentar berhasil diposting.');
     }
+
+    public function index() {
+        $komentars = Komentar::with('blog')->get();
+        return view('blogs.komentar', compact('komentars'));
+    }
+
+    public function destroy($id)
+    {
+        $komentar = Komentar::findOrFail($id)->delete();
+        return redirect()->route('komentar.index')->with('sukses', 'Komentar berhasil dihapus.');
+    }
 }

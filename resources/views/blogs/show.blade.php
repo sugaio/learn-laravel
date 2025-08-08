@@ -23,6 +23,13 @@
             Dibuat : 
             <span class="px-2 py-1 text-xs text-green-700 bg-green-100 rounded">{{ $blog->created_at->diffForHumans() }}</span>
         </p>
+        
+        <p class="mb-4 text-sm text-gray-500">Tag :
+            @foreach ($blog->tags as $tag )
+                <span class="px-2 py-1 mr-1 text-gray-700 bg-gray-100 rounded text-sx">{{ $tag->nama }}</span>
+            @endforeach
+        </p>
+        
         <div class="mb-8 leading-relaxed text-gray-700">{{ $blog->deskripsi }}</div>
 
         <hr class="my-6">
