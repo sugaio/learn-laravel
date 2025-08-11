@@ -11,7 +11,7 @@
     <div class="max-w-2xl p-6 mx-auto mt-10 bg-white rounded shadow-md-lg">
         <h1 class="mb-6 text-2xl font-semibold text-gray-700">Create New Blog</h1>
 
-        <form action="{{ route('blog.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
@@ -35,6 +35,14 @@
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                 </select>
+            </div>
+            
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+                <input name="image" class="block py-2 text-gray-900 border border-gray-300 rounded-lg cursor-pointer te-4 xt-sm pxw-full bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                @error('image')
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50">{{ $message }}</div>
+                @enderror
             </div>
             
             <div>

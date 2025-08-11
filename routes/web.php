@@ -10,6 +10,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,6 +71,14 @@ route::middleware('guest')->group(function () {
 
 route::get('/blogs', [BlogController::class, 'beranda'])->name('blogs.beranda');
 route::get('blogs/{id}', [BlogController::class, 'detail'])->name('blogs.detail');
+
+route::get('/upload', function () {
+    return Storage::disk('public')->put('example2.txt', 'ini konten example.txt');
+});
+
+route::get('/file-uploaded', function () {
+    return asset('storage/example2.txt');
+});
 
 // versi update simpel
 // route::view('/tentang', 'about');

@@ -94,15 +94,19 @@
                             <td class="px-6 py-4 space-x-2 text-sm text-center">
                                 <a href="{{ route('blog.show', ['id' => $item->id]) }}"
                                     class="inline-block px-3 py-1 transition border border-green-600 rounded green-blue-600 hover:bg-green-600 hover:text-white">View</a>
+                                @can('update', $item)    
                                 <a href="{{ route('blog.edit', ['id' => $item->id]) }}"
                                     class="inline-block px-3 py-1 text-blue-600 transition border border-blue-600 rounded hover:bg-blue-600 hover:text-white">Edit</a>
+                                @endcan
                                 
+                                @can('delete', $item)    
                                 <form class="inline" action="{{ route('blog.delete', ['id' => $item->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" onclick="confirm('Hapus data ini ?')"
                                     class="inline-block px-3 py-1 text-red-600 transition border border-red-600 rounded hover:bg-red-600 hover:text-white">Delete</button>
                                 </form>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

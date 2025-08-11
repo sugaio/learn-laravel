@@ -13,7 +13,7 @@ class Blog extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'title', 'deskripsi', 'status', 'user_id'
+        'title', 'deskripsi', 'status', 'user_id', 'image'
     ];
 
     public function user(): BelongsTo

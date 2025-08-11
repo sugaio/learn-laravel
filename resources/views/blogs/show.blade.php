@@ -29,6 +29,10 @@
                 <span class="px-2 py-1 mr-1 text-gray-700 bg-gray-100 rounded text-sx">{{ $tag->nama }}</span>
             @endforeach
         </p>
+
+        <div>
+            <img src="{{ asset('storage/'.$blog->image) }}" alt="">
+        </div>
         
         <div class="mb-8 leading-relaxed text-gray-700">{{ $blog->deskripsi }}</div>
 
