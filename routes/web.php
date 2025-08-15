@@ -1,16 +1,22 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Models\User;
 use App\Models\Phone;
+use App\Mail\LoginMail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Group;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhoneController;
-use App\Http\Controllers\TagController;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\KomentarController;
+use App\Jobs\ProcessLoginMail;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,7 +44,7 @@ route::get('/blog', function () {
     return view('blog', ['data' => $data, 'title' => $title]);
 });
 
-route::prefix('admin')->middleware('auth')->group(function () {
+route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
     route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
     route::post('/blogs/store', [BlogController::class, 'store'])->name('blog.store');
@@ -60,12 +66,16 @@ route::prefix('admin')->middleware('auth')->group(function () {
         route::get('/tags', [TagController::class, 'index'])->name('tags.index');
     });
     
-    route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 route::middleware('guest')->group(function () {
     route::get('/login', [AuthController::class, 'login'])->name('login');
     route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
+    route::get('/register', [AuthController::class, 'register'])->name('register');
+    route::post('/register', [AuthController::class, 'createUser'])->name('register.user');
+
 });
 
 
@@ -79,6 +89,32 @@ route::get('/upload', function () {
 route::get('/file-uploaded', function () {
     return asset('storage/example2.txt');
 });
+
+route::get('/send-email', function (Request $request) {
+    $users = User::limit(10)->get();
+
+    foreach($users as $user) {
+        ProcessLoginMail::dispatch($user, $request->ip(), now()->toDateTimeString(), $request->userAgent())->onQueue('LoginMail');
+    }
+
+    return 'Sending All Email Complete';
+});
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect()->route('blog.index');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // versi update simpel
 // route::view('/tentang', 'about');
